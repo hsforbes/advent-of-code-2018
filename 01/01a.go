@@ -19,7 +19,7 @@ func main() {
 
 	reader := bufio.NewReader(file)
 
-	// total := 0
+	total := 0
 
 	for {
 		line, _, err := reader.ReadLine()
@@ -37,14 +37,16 @@ func main() {
 		numberString := lineString[1:len(lineString)]
 		numberInt, err := strconv.Atoi(numberString)
 
-		fmt.Printf("%d ", numberInt)
+		// fmt.Printf("%d ", numberInt)
 
 		if "+" == string(firstCharRune) {
 			// fmt.Printf("Found plus   %c ", line[0])
-			// total +=
+			total += numberInt
+		} else {
+			total -= numberInt
 		}
 
-		fmt.Printf("\n")
+		fmt.Printf("\t# current total: %d\n", total)
 	}
 
 }

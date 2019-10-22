@@ -12,12 +12,16 @@ import (
 func main() {
 	fmt.Println("Are you ready to go?")
 
-	file, err := os.Open("./input.txt")
+	file, err := os.Open("./input2.txt")
 	if err != nil {
 		panic(err)
 	}
 
 	reader := bufio.NewReader(file)
+
+	inputSize := reader.Size()
+
+	fmt.Printf("size: %d", inputSize)
 
 	total := 0
 

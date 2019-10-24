@@ -1,35 +1,33 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"io"
-	"os"
+	"io/ioutil"
 	"strconv"
+	"strings"
 )
 
 // Entry point
 func main() {
 	fmt.Println("Are you ready to go?")
 
-	file, err := os.Open("./input2.txt")
-	if err != nil {
-		panic(err)
-	}
-
-	reader := bufio.NewReader(file)
-
-	inputSize := reader.Size()
-
-	fmt.Printf("size: %d", inputSize)
+	buffer, _ := ioutil.ReadFile("./input.txt")
+	lines := strings.Split(string(buffer), "\n")
 
 	total := 0
 
-	for {
-		line, _, err := reader.ReadLine()
+	// for i := 0; i < len(lines); i++ {
+	// 	fmt.Printf("Line\t%d:\t%s\n", i, lines[i])
+	// }
 
-		if err == io.EOF {
-			break
+	// for _, line := range strings.Split(string(buffer), "\n") {
+
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		// fmt.Printf("Line: %s\n", line)
+
+		if len(line) == 0 {
+			continue
 		}
 
 		fmt.Printf("%s ", line)
@@ -40,6 +38,9 @@ func main() {
 		// numberInt := int(numberRune - '0')
 		numberString := lineString[1:len(lineString)]
 		numberInt, err := strconv.Atoi(numberString)
+		if err != nil {
+			panic(err)
+		}
 
 		// fmt.Printf("%d ", numberInt)
 

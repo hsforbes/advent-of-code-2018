@@ -11,17 +11,21 @@ import (
 func main() {
 	fmt.Println("Are you ready to go?")
 
-	// file, err := os.Open("./input.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// reader := bufio.NewReader(file)
 	buffer, _ := ioutil.ReadFile("./input.txt")
+	lines := strings.Split(string(buffer), "\n")
 
 	total := 0
 
-	for _, line := range strings.Split(string(buffer), "\n") {
+	// for i := 0; i < len(lines); i++ {
+	// 	fmt.Printf("Line\t%d:\t%s\n", i, lines[i])
+	// }
+
+	// for _, line := range strings.Split(string(buffer), "\n") {
+
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		// fmt.Printf("Line: %s\n", line)
+
 		if len(line) == 0 {
 			continue
 		}

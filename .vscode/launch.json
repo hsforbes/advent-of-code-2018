@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "/Users/drewforbes/go/src/advent-of-code-2018/01",
+            "program": "/Users/drewforbes/go/src/advent-of-code-2018/01b",
             "env": {},
             "args": []
         }

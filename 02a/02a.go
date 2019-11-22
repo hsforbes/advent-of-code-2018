@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+
 // Entry point
 func main() {
 	fmt.Println("Are you ready to go?")
@@ -28,8 +29,8 @@ func main() {
 			break
 		}
 
-		fmt.Println();
-		fmt.Printf("\n%s", line)
+		// fmt.Println();
+		// fmt.Printf("\n%s", line)
 
 		lineAnswer := countTwoOrThreeRepeatedLetters(line)
 		
@@ -47,39 +48,69 @@ func main() {
 
 }
 
+
 type LineAnswer struct {
 	hasExactlyTwoOfALetter, hasExactlyThreeOfALetter bool
 }
 
+
 func countTwoOrThreeRepeatedLetters(line string) LineAnswer {
 
-	findCharCounts(line)
+	charCounts := findCharCounts(line)
 
+	lineAnswer := LineAnswer{false, false}
 	/* 
 	look through chars for two or three counts
 	set lineAnswer
 	*/
+	for i:=0; i < len(charCounts); i++ {
+		if charCounts[i].count == 2 {
+			lineAnswer.hasExactlyTwoOfALetter = true
+		} 
+		if charCounts[i].count == 3 {
+			lineAnswer.hasExactlyThreeOfALetter = true
+		}
+	}
 
-	lineAnswer := LineAnswer{true, true}
 	return lineAnswer
 }
 
+
 func findCharCounts(line string) []CharCount {
+
 	var charCounts []CharCount
 
 	for i:=0; i < len(line); i++ {
-		fmt.Printf("\t # Char: %s ", string(line[i]))
+		// fmt.Printf("\t # Char: %s ", string(line[i]))
+		charCounts = addKeyCharToCharCounts(charCounts, line[i])
 	}
-
-	a := CharCount{13, 1}
-	// b := CharCount(13, 1)
-
-	charCounts = append(charCounts, a)
-	charCounts = append(charCounts, a)
-	// charCounts = append(charCounts, b)
 
 	return charCounts
 }
+
+
+func addKeyCharToCharCounts(charCounts []CharCount, keyChar byte) []CharCount {
+
+	foundChar := false
+	returnCharCounts := charCounts
+
+	// TODO Improve by keeping charCounts sorted by letter
+	for i:=0; i < len(charCounts); i++ {
+		if charCounts[i].char == keyChar {
+			returnCharCounts[i].count++
+			foundChar = true
+			break
+		}
+	}
+
+	// If a new letter was found
+	if !foundChar {
+		returnCharCounts = append(returnCharCounts, CharCount{keyChar, 1})
+	}
+
+	return returnCharCounts
+}
+
 
 type CharCount struct {
 	char byte

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 )
-
 
 // Entry point
 func main() {
@@ -19,7 +19,7 @@ func main() {
 
 	reader := bufio.NewReader(file)
 
-	linesWithExactlyTwoOfALetter, linesWithExactlyThreeOfALetter := 0, 0
+	linesRead := []string{}
 
 	for {
 		lineBytes, _, err := reader.ReadLine()
@@ -29,44 +29,55 @@ func main() {
 			break
 		}
 
+		linesRead = append(linesRead, line)
+
 		// fmt.Println();
 		// fmt.Printf("\n%s", line)
 
-		lineAnswer := countTwoOrThreeRepeatedLetters(line)
-		
-		if(lineAnswer.hasExactlyTwoOfALetter) {
-			linesWithExactlyTwoOfALetter++
-		}
-		if(lineAnswer.hasExactlyThreeOfALetter) {
-			linesWithExactlyThreeOfALetter++
-		}
-
 	}
 
-	fmt.Printf("\nlinesWithExactlyTwoOfALetter:\t%d\t#\tlinesWithExactlyThreeOfALetter:\t%d", linesWithExactlyTwoOfALetter, linesWithExactlyThreeOfALetter)
-	fmt.Printf("\nChecksum:\t%d", linesWithExactlyTwoOfALetter * linesWithExactlyThreeOfALetter)
+	sort.Strings(linesRead)
+
+	// fmt.Println("Made sorted slice of strings:")
+	// fmt.Println(linesRead)
+
+	for lineIndex := 0; lineIndex < len(linesRead)-1; lineIndex++ {
+		// commonChars := []rune{}
+
+		for charIndex := 0; charIndex < 26; charIndex++ {
+			if linesRead[lineIndex][charIndex] == linesRead[lineIndex+1][charIndex] {
+				if charIndex > 19 {
+					fmt.Printf("\nMatching index\t%d", charIndex)
+					fmt.Printf("\nLine 1:\t%s\tLine 2:\t%s\n", linesRead[lineIndex], linesRead[lineIndex+1])
+				}
+				if charIndex == 25 {
+					fmt.Printf("\nFound the match:\t%s", linesRead[lineIndex])
+				}
+			} else {
+				break
+			}
+		}
+	}
 
 }
-
 
 type LineAnswer struct {
 	hasExactlyTwoOfALetter, hasExactlyThreeOfALetter bool
 }
-
 
 func countTwoOrThreeRepeatedLetters(line string) LineAnswer {
 
 	charCounts := findCharCounts(line)
 
 	lineAnswer := LineAnswer{false, false}
-	/* 
-	look through chars for two or three counts
-	set lineAnswer
+	/*
+		look through chars for two or three counts
+		set lineAnswer
 	*/
-	for i:=0; i < len(charCounts); i++ {
+	for i := 0; i < len(charCounts); i++ {
 		if charCounts[i].count == 2 {
 			lineAnswer.hasExactlyTwoOfALetter = true
-		} 
+		}
 		if charCounts[i].count == 3 {
 			lineAnswer.hasExactlyThreeOfALetter = true
 		}
@@ -75,12 +86,11 @@ func countTwoOrThreeRepeatedLetters(line string) LineAnswer {
 	return lineAnswer
 }
 
-
 func findCharCounts(line string) []CharCount {
 
 	var charCounts []CharCount
 
-	for i:=0; i < len(line); i++ {
+	for i := 0; i < len(line); i++ {
 		// fmt.Printf("\t # Char: %s ", string(line[i]))
 		charCounts = addKeyCharToCharCounts(charCounts, line[i])
 	}
@@ -88,14 +98,13 @@ func findCharCounts(line string) []CharCount {
 	return charCounts
 }
 
-
 func addKeyCharToCharCounts(charCounts []CharCount, keyChar byte) []CharCount {
 
 	foundChar := false
 	returnCharCounts := charCounts
 
 	// TODO Improve by keeping charCounts sorted by letter
-	for i:=0; i < len(charCounts); i++ {
+	for i := 0; i < len(charCounts); i++ {
 		if charCounts[i].char == keyChar {
 			returnCharCounts[i].count++
 			foundChar = true
@@ -111,8 +120,7 @@ func addKeyCharToCharCounts(charCounts []CharCount, keyChar byte) []CharCount {
 	return returnCharCounts
 }
 
-
 type CharCount struct {
-	char byte
+	char  byte
 	count int
 }

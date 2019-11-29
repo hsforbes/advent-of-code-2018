@@ -149,14 +149,15 @@ func findNonOverlappingClaim(fabric [][]int) {
 	}
 }
 
+// TODO: The program (not necessarily this func) does not find the overlapping value.
 func isClaimOverlapping(fabric [][]int, claim Claim) bool {
-	
+
 	for xIndex := claim.xOffset; xIndex < claim.xOffset+claim.xLength; xIndex++ {
 		for yIndex := claim.yOffset; yIndex < claim.yOffset+claim.yLength; yIndex++ {
 			if fabric[xIndex][yIndex] == 0 {
 				fmt.Println("That's weird!")
 			} else if fabric[xIndex][yIndex] == 1 {
-				
+
 			} else {
 				return true
 			}
